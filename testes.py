@@ -243,22 +243,21 @@ def teste_programa_proprio():
     cpu.memoria[3] = "SUB R0, R1"
     cpu.memoria[4] = "JMP 6"
     cpu.memoria[5] = "LOAD R0, 99"
-    cpu.memoria[6] = "AND R0, R1"
-    cpu.memoria[7] = "STORE R0, 13"
-    cpu.memoria[8] = "XOR R0, R1"
-    cpu.memoria[9] = "STORE R0, 14"
-    cpu.memoria[10] = "OR R0, R1"
-    cpu.memoria[11] = "STORE R0, 15"
-    cpu.memoria[12] = "HALT"
+    cpu.memoria[6] = "LOAD R2, 12"
+    cpu.memoria[7] = "LOAD R3, 10"
+    cpu.memoria[8] = "AND R2, R3"
+    cpu.memoria[9] = "XOR R0, R3"
+    cpu.memoria[10] = "OR R1, R2"
+    cpu.memoria[11] = "STORE R2, 14"
+    cpu.memoria[12] = "STORE R0, 15"
+    cpu.memoria[13] = "HALT"
 
     cpu.executar()
 
-    assert cpu.memoria[13] == 64             # AND
-    assert cpu.memoria[14] == 36             # XOR
-    assert cpu.memoria[15] == 100            # OR
-    assert cpu.registradores["R0"] == 100
-    assert cpu.registradores["R1"] == 100
-    assert cpu.pc == 12                      # HALT não avança o PC
+    assert cpu.registradores == {"R0": 194, "R1": 108, "R2": 8, "R3": 10}
+    assert cpu.memoria[14] == 8              # AND
+    assert cpu.memoria[15] == 194            # XOR
+    assert cpu.pc == 13                      # HALT não avança o PC
     assert cpu.halted is True
 
     print("[OK] Programa próprio")
