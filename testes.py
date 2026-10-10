@@ -234,6 +234,35 @@ def teste_programa_exemplo():
 
     print("[OK] Programa de exemplo")
 
+def teste_programa_proprio():
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 200"
+    cpu.memoria[1] = "LOAD R1, 100"
+    cpu.memoria[2] = "ADD R0, R1"
+    cpu.memoria[3] = "SUB R0, R1"
+    cpu.memoria[4] = "JMP 6"
+    cpu.memoria[5] = "LOAD R0, 99"
+    cpu.memoria[6] = "AND R0, R1"
+    cpu.memoria[7] = "STORE R0, 13"
+    cpu.memoria[8] = "XOR R0, R1"
+    cpu.memoria[9] = "STORE R0, 14"
+    cpu.memoria[10] = "OR R0, R1"
+    cpu.memoria[11] = "STORE R0, 15"
+    cpu.memoria[12] = "HALT"
+
+    cpu.executar()
+
+    assert cpu.memoria[13] == 64             # AND
+    assert cpu.memoria[14] == 36             # XOR
+    assert cpu.memoria[15] == 100            # OR
+    assert cpu.registradores["R0"] == 100
+    assert cpu.registradores["R1"] == 100
+    assert cpu.pc == 12                      # HALT não avança o PC
+    assert cpu.halted is True
+
+    print("[OK] Programa próprio")
+
 if __name__ == "__main__":
 
     print("Executando testes...")
@@ -248,6 +277,7 @@ if __name__ == "__main__":
     teste_pc()
     teste_fetch()
     teste_programa_exemplo()
+    teste_programa_proprio()
 
     print()
     print("Todos os testes foram aprovados.")
