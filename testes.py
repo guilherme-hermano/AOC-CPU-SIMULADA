@@ -10,7 +10,7 @@ os alunos deverão ampliar este arquivo.
 """
 
 from cpu import CPU
-
+from ula import ula, limitar_8bits
 
 def teste_load():
     cpu = CPU()
@@ -54,6 +54,28 @@ def teste_halt():
 
     print("[OK] HALT")
 
+def teste_ula():
+    assert ula("ADD", 5, 8) == 13
+    assert ula("ADD", 200, 100) == 44 
+    assert ula("ADD", 255, 1) == 0 
+
+    assert ula("SUB", 8, 5) == 3
+    assert ula("SUB", 5, 8) == 253     
+    assert ula("SUB", 0, 1) == 255   
+
+    assert ula("AND", 12, 10) == 8        
+    assert ula("OR", 12, 10) == 14        
+    assert ula("XOR", 12, 10) == 6       
+    assert ula("XOR", 173, 173) == 0    
+    assert ula("AND", 173, 255) == 173    
+
+    try:
+        ula("MUL", 2, 3)
+        assert False, "ULA deveria rejeitar a operação MUL"
+    except ValueError:
+        pass
+
+    print("[OK] ULA")
 
 if __name__ == "__main__":
 
@@ -63,6 +85,7 @@ if __name__ == "__main__":
     teste_load()
     teste_jmp()
     teste_halt()
+    teste_ula()
 
     print()
     print("Todos os testes-base foram aprovados.")
