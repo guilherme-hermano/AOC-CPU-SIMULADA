@@ -35,6 +35,17 @@ class CPU:
         # Estado da CPU
         self.halted = False
 
+        # Métodos para manipular registradores
+    def ler_registrador(self, nome):
+        if nome not in self.registradores:
+            raise ValueError(f"Registrador inválido: {nome}")
+        return self.registradores[nome]
+
+    def escrever_registrador(self, nome, valor):
+        if nome not in self.registradores:
+            raise ValueError(f"Registrador inválido: {nome}")
+        self.registradores[nome] = limitar_8bits(valor)
+
     def executar_instrucao(self, instrucao):
 
         # Exemplo:
@@ -47,7 +58,7 @@ class CPU:
         operacao = partes[0]
 
         # ==============================================
-        # LOAD — IMPLEMENTADO
+        # LOAD
         # ==============================================
         # LOAD R0, 5
         # R0 <- 5
@@ -62,65 +73,104 @@ class CPU:
             self.pc += 1
 
         # ==============================================
-        # STORE — IMPLEMENTAR
+        # STORE
         # ==============================================
         # STORE R0, 15
         # MEM[15] <- R0
 
         elif operacao == "STORE":
+            registrador = partes[1]
+            endereco = int(partes[2])
 
-            # IMPLEMENTAR
-            pass
+            if endereco < 0 or endereco >= len(self.memoria):
+                raise ValueError("Endereço de memória inválido")
+            
+            self.memoria[endereco] = self.registradores[registrador]
+            self.pc += 1
 
         # ==============================================
-        # ADD — IMPLEMENTAR
+        # ADD
         # ==============================================
         # ADD R0, R1
         # R0 <- R0 + R1
 
         elif operacao == "ADD":
-
-            # IMPLEMENTAR
-            pass
+            registrador_1 = partes[1]
+            registrador_2 = partes[2]
+            ULA_resultado = ula(
+                "ADD",
+                self.registradores[registrador_1],
+                self.registradores[registrador_2]
+            )
+            self.registradores[registrador_1] = ULA_resultado
+            self.pc += 1
 
         # ==============================================
-        # SUB — IMPLEMENTAR
+        # SUB
         # ==============================================
 
         elif operacao == "SUB":
-
-            # IMPLEMENTAR
+            registrador_1 = partes[1]
+            registrador_2 = partes[2]
+            ULA_resultado = ula(
+                "SUB",
+                self.registradores[registrador_1],
+                self.registradores[registrador_2]
+            )
+            self.registradores[registrador_1] = ULA_resultado
+            self.pc += 1
             pass
 
         # ==============================================
-        # AND — IMPLEMENTAR
+        # AND
         # ==============================================
 
         elif operacao == "AND":
-
-            # IMPLEMENTAR
+            registrador_1 = partes[1]
+            registrador_2 = partes[2]
+            ULA_resultado = ula(
+                "AND",
+                self.registradores[registrador_1],
+                self.registradores[registrador_2]
+            )
+            self.registradores[registrador_1] = ULA_resultado
+            self.pc += 1
             pass
 
         # ==============================================
-        # OR — IMPLEMENTAR
+        # OR
         # ==============================================
 
         elif operacao == "OR":
-
-            # IMPLEMENTAR
+            registrador_1 = partes[1]
+            registrador_2 = partes[2]
+            ULA_resultado = ula(
+                "OR",
+                self.registradores[registrador_1],
+                self.registradores[registrador_2]
+            )
+            self.registradores[registrador_1] = ULA_resultado
+            self.pc += 1
             pass
 
         # ==============================================
-        # XOR — IMPLEMENTAR
+        # XOR
         # ==============================================
 
         elif operacao == "XOR":
-
-            # IMPLEMENTAR
+            registrador_1 = partes[1]
+            registrador_2 = partes[2]
+            ULA_resultado = ula(
+                "XOR",
+                self.registradores[registrador_1],
+                self.registradores[registrador_2]
+            )
+            self.registradores[registrador_1] = ULA_resultado
+            self.pc += 1
             pass
 
         # ==============================================
-        # JMP — IMPLEMENTADO
+        # JMP
         # ==============================================
         # JMP 8
         # PC <- 8
@@ -135,7 +185,7 @@ class CPU:
             self.pc = endereco
 
         # ==============================================
-        # HALT — IMPLEMENTADO
+        # HALT
         # ==============================================
 
         elif operacao == "HALT":

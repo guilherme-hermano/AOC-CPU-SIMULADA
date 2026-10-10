@@ -77,15 +77,101 @@ def teste_ula():
 
     print("[OK] ULA")
 
+def teste_store():
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 42"
+    cpu.memoria[1] = "STORE R0, 15"
+    cpu.memoria[2] = "HALT"
+
+    cpu.executar()
+
+    assert cpu.memoria[15] == 42
+    assert cpu.registradores["R0"] == 42  
+
+    # Endereço fora de 0 a 15 deve gerar erro
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 1"
+    cpu.memoria[1] = "STORE R0, 16"
+    cpu.memoria[2] = "HALT"
+
+    try:
+        cpu.executar()
+        assert False, "STORE em 16 deveria falhar"
+    except ValueError:
+        pass
+
+    print("[OK] STORE")
+
+def teste_registradores():
+    cpu = CPU()
+
+    # Todos zerados inicialmente
+    for nome in ("R0", "R1", "R2", "R3"):
+        assert cpu.registradores[nome] == 0
+
+    # Um valor diferente em cada registrador, sem interferência entre eles
+    cpu.memoria[0] = "LOAD R0, 1"
+    cpu.memoria[1] = "LOAD R1, 2"
+    cpu.memoria[2] = "LOAD R2, 3"
+    cpu.memoria[3] = "LOAD R3, 4"
+    cpu.memoria[4] = "HALT"
+
+    cpu.executar()
+
+    assert cpu.registradores == {"R0": 1, "R1": 2, "R2": 3, "R3": 4}
+
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 300"
+    cpu.memoria[1] = "LOAD R1, -1"
+    cpu.memoria[2] = "HALT"
+
+    cpu.executar()
+
+    assert cpu.registradores["R0"] == 44
+    assert cpu.registradores["R1"] == 255
+
+    # ADD, SUB, AND, OR e XOR sobre registradores
+    # (operação, valor em R0, valor em R1, esperado em R0)
+    casos = [
+        ("ADD", 5, 8, 13),
+        ("ADD", 200, 100, 44),
+        ("SUB", 8, 5, 3),
+        ("SUB", 5, 8, 253),
+        ("AND", 12, 10, 8),        # 1100 & 1010 = 1000
+        ("OR", 12, 10, 14),        # 1100 | 1010 = 1110
+        ("XOR", 12, 10, 6),        # 1100 ^ 1010 = 0110
+    ]
+
+    for operacao, a, b, esperado in casos:
+        cpu = CPU()
+
+        cpu.memoria[0] = f"LOAD R0, {a}"
+        cpu.memoria[1] = f"LOAD R1, {b}"
+        cpu.memoria[2] = f"{operacao} R0, R1"
+        cpu.memoria[3] = "HALT"
+
+        cpu.executar()
+
+        descricao = f"{operacao} {a}, {b}"
+        assert cpu.registradores["R0"] == esperado, descricao
+        assert cpu.registradores["R1"] == b, descricao
+
+    print("[OK] Registradores")
+
 if __name__ == "__main__":
 
-    print("Executando testes-base...")
+    print("Executando testes...")
     print()
 
     teste_load()
     teste_jmp()
     teste_halt()
     teste_ula()
+    teste_store()
+    teste_registradores()
 
     print()
-    print("Todos os testes-base foram aprovados.")
+    print("Todos os testes foram aprovados.")
