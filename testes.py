@@ -2,11 +2,9 @@
 TESTES-BASE
 AOC 2026.2
 
-Os testes abaixo verificam apenas as partes já fornecidas
-no código-base: LOAD, JMP e HALT.
-
-Depois de implementar STORE e as operações da ULA,
-os alunos deverão ampliar este arquivo.
+Testes automáticos da CPU: instruções,
+ULA, registradores, PC, FETCH, programa de exemplo do enunciado e
+programa próprio de demonstração.
 """
 
 from cpu import CPU

@@ -9,8 +9,8 @@ CPU de 8 bits:
 - ULA
 - instruções LOAD, STORE, ADD, SUB, AND, OR, XOR, JMP e HALT
 
-No código-base, LOAD, JMP e HALT já estão implementados.
-As demais instruções possuem partes para implementação.
+Todas as instruções estão implementadas. O FETCH valida o PC e o
+conteúdo da posição lida antes de executar.
 """
 
 from ula import ula, limitar_8bits
@@ -35,17 +35,6 @@ class CPU:
         # Estado da CPU
         self.halted = False
 
-        # Métodos para manipular registradores
-    def ler_registrador(self, nome):
-        if nome not in self.registradores:
-            raise ValueError(f"Registrador inválido: {nome}")
-        return self.registradores[nome]
-
-    def escrever_registrador(self, nome, valor):
-        if nome not in self.registradores:
-            raise ValueError(f"Registrador inválido: {nome}")
-        self.registradores[nome] = limitar_8bits(valor)
-
     def executar_instrucao(self, instrucao):
 
         # Exemplo:
@@ -64,7 +53,9 @@ class CPU:
         # R0 <- 5
 
         if operacao == "LOAD":
-
+            if registrador not in self.registradores:
+                raise ValueError(f"Registrador inválido: {registrador}")
+            
             registrador = partes[1]
             valor = int(partes[2])
 

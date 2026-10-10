@@ -2,7 +2,8 @@
 ULA — Código-base para o projeto de CPU Simulada
 AOC 2026.2
 
-Os alunos devem implementar as operações marcadas como IMPLEMENTAR.
+Todas as operações estão implementadas. Entradas e
+resultado são limitados a 8 bits com & 0xFF.
 """
 
 def limitar_8bits(valor):
