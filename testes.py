@@ -161,6 +161,79 @@ def teste_registradores():
 
     print("[OK] Registradores")
 
+def teste_pc():
+    # Testa o avanço do PC e o efeito do HALT
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 1"
+    cpu.memoria[1] = "LOAD R1, 2"
+    cpu.memoria[2] = "HALT"
+
+    assert cpu.pc == 0
+
+    cpu.ciclo()
+    assert cpu.pc == 1
+
+    cpu.ciclo()
+    assert cpu.pc == 2
+
+    cpu.ciclo()                       # executa o HALT
+    assert cpu.pc == 2                # HALT não avança o PC
+    assert cpu.halted is True
+
+    cpu.ciclo()                       # ciclo após o HALT não faz nada
+    assert cpu.pc == 2
+
+    cpu = CPU()
+
+    cpu.memoria[0] = "JMP 5"
+    cpu.ciclo()
+    assert cpu.pc == 5
+
+    print("[OK] PC")
+
+def teste_fetch():
+    # Teste FETCH com PC fora da memória
+    cpu = CPU()
+    cpu.pc = 16
+
+    try:
+        cpu.ciclo()
+        assert False, "FETCH com PC 16 deveria falhar"
+    except RuntimeError as erro:
+        assert "PC fora da memória" in str(erro)
+
+    # Posição sem instrução (programa sem HALT)
+    cpu = CPU()
+    cpu.memoria[0] = "LOAD R0, 1"
+
+    try:
+        cpu.executar()
+        assert False, "FETCH de um dado deveria falhar"
+    except RuntimeError as erro:
+        assert "Posição 1" in str(erro)
+
+    print("[OK] FETCH")
+
+def teste_programa_exemplo():
+    cpu = CPU()
+
+    cpu.memoria[0] = "LOAD R0, 5"
+    cpu.memoria[1] = "LOAD R1, 8"
+    cpu.memoria[2] = "ADD R0, R1"
+    cpu.memoria[3] = "STORE R0, 15"
+    cpu.memoria[4] = "HALT"
+
+    cpu.executar()
+
+    assert cpu.memoria[15] == 13             # resultado esperado pelo PDF
+    assert cpu.registradores["R0"] == 13
+    assert cpu.registradores["R1"] == 8      # origem não muda
+    assert cpu.pc == 4                       # HALT não avança o PC
+    assert cpu.halted is True
+
+    print("[OK] Programa de exemplo")
+
 if __name__ == "__main__":
 
     print("Executando testes...")
@@ -172,6 +245,9 @@ if __name__ == "__main__":
     teste_ula()
     teste_store()
     teste_registradores()
+    teste_pc()
+    teste_fetch()
+    teste_programa_exemplo()
 
     print()
     print("Todos os testes foram aprovados.")

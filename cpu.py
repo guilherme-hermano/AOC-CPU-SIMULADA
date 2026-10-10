@@ -205,7 +205,15 @@ class CPU:
         # FETCH
         # ==============================================
 
+        if self.pc < 0 or self.pc >= len(self.memoria):
+            raise RuntimeError(f"PC fora da memória: {self.pc}")
+
         instrucao = self.memoria[self.pc]
+
+        if not isinstance(instrucao, str):
+            raise RuntimeError(
+                f"Posição {self.pc} não contém uma instrução: {instrucao}"
+            )
 
         print()
         print("--------------------------------")
