@@ -3,7 +3,9 @@
 Trabalho prático de Arquitetura de Computadores (2026.2), Universidade Federal do Ceará, Campus Sobral.
 Professor: Wendley S. Silva.
 
-Autoria: Guilherme Hermano de Paula Ferreira
+Autoria:
+- Guilherme Hermano de Paula Ferreira
+- Otávio Pereira Magalhães Moura
 
 Vídeo de apresentação: link
 
