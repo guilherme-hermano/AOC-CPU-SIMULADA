@@ -53,10 +53,10 @@ class CPU:
         # R0 <- 5
 
         if operacao == "LOAD":
+            registrador = partes[1]
             if registrador not in self.registradores:
                 raise ValueError(f"Registrador inválido: {registrador}")
             
-            registrador = partes[1]
             valor = int(partes[2])
 
             self.registradores[registrador] = limitar_8bits(valor)
