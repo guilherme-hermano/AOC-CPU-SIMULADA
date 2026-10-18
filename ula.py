@@ -15,19 +15,19 @@ def ula(operacao, a, b=0):
     b = limitar_8bits(b)
 
     if operacao == "ADD":
-        resultado = a + b
+        resultado = a + b # Soma simples
 
     elif operacao == "SUB":
-        resultado = a - b
+        resultado = a - b # Subtração simples
 
     elif operacao == "AND":
-        resultado = a & b
+        resultado = a & b # Operador lógico AND bit a bit
 
     elif operacao == "OR":
-        resultado = a | b
+        resultado = a | b # Operador lógico OR bit a bit
 
     elif operacao == "XOR":
-        resultado = a ^ b
+        resultado = a ^ b # Operador lógico XOR bit a bit
 
     else:
         raise ValueError(f"Operação inválida: {operacao}")
