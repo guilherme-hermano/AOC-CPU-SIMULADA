@@ -11,6 +11,7 @@ from cpu import CPU
 from ula import ula, limitar_8bits
 
 def teste_load():
+    # Testa a instrução LOAD, que carrega um valor imediato em um registrador.
     cpu = CPU()
 
     cpu.memoria[0] = "LOAD R0, 25"
@@ -24,6 +25,7 @@ def teste_load():
 
 
 def teste_jmp():
+    # Testa a instrução JMP, que altera o PC para um valor imediato.
     cpu = CPU()
 
     cpu.memoria[0] = "LOAD R0, 10"
@@ -42,6 +44,7 @@ def teste_jmp():
 
 
 def teste_halt():
+    # Testa a instrução HALT, que encerra a execução da CPU.
     cpu = CPU()
 
     cpu.memoria[0] = "HALT"
@@ -53,6 +56,7 @@ def teste_halt():
     print("[OK] HALT")
 
 def teste_ula():
+    # Testa a ULA com todas as operações implementadas.
     assert ula("ADD", 5, 8) == 13
     assert ula("ADD", 200, 100) == 44 
     assert ula("ADD", 255, 1) == 0 
@@ -76,6 +80,7 @@ def teste_ula():
     print("[OK] ULA")
 
 def teste_store():
+    # Testa a instrução STORE, que grava o valor de um registrador na memória.
     cpu = CPU()
 
     cpu.memoria[0] = "LOAD R0, 42"
@@ -103,6 +108,7 @@ def teste_store():
     print("[OK] STORE")
 
 def teste_registradores():
+    # Testa o acesso aos registradores e a operação de cada um.
     cpu = CPU()
 
     # Todos zerados inicialmente
@@ -214,6 +220,7 @@ def teste_fetch():
     print("[OK] FETCH")
 
 def teste_programa_exemplo():
+    # Programa de exemplo do enunciado
     cpu = CPU()
 
     cpu.memoria[0] = "LOAD R0, 5"
@@ -233,6 +240,7 @@ def teste_programa_exemplo():
     print("[OK] Programa de exemplo")
 
 def teste_programa_proprio():
+    # Programa próprio de demonstração, com todas as instruções
     cpu = CPU()
 
     cpu.memoria[0] = "LOAD R0, 200"
